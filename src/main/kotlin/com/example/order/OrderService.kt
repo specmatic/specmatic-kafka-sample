@@ -3,6 +3,7 @@ package com.example.order
 import com.google.gson.Gson
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
+import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
 
@@ -30,8 +31,9 @@ class OrderService(
     private val gson = Gson()
 
     @KafkaListener(topics = [PLACE_ORDER_TOPIC])
-    fun run(orderRequest: String) {
+    fun run(orderRequest: String, ack: Acknowledgment) {
         processMessage(gson.fromJson(orderRequest, OrderRequest::class.java))
+        ack.acknowledge()
     }
 
     private fun processMessage(orderRequest: OrderRequest) {

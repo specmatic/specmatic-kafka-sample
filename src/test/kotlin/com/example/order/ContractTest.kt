@@ -17,7 +17,6 @@ class ContractTest : SpecmaticKafkaContractTest {
         @BeforeAll
         fun setup() {
             kafkaBroker.start()
-            Thread.sleep(1000)
 
             context = SpringApplication.run(OrderServiceApplication::class.java)
         }
@@ -28,7 +27,6 @@ class ContractTest : SpecmaticKafkaContractTest {
             context.stop()
 
             kafkaBroker.stop()
-            Thread.sleep(1000)
         }
     }
 
