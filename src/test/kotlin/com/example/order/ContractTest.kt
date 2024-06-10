@@ -2,6 +2,7 @@ package com.example.order
 
 import com.example.order.testcontainers.KafkaTestContainer
 import `in`.specmatic.async.junit.SpecmaticKafkaContractTest
+import `in`.specmatic.async.utils.CONSUMER_GROUP_ID
 import `in`.specmatic.async.utils.EXAMPLES_DIR
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
@@ -18,6 +19,7 @@ class ContractTest : SpecmaticKafkaContractTest {
         @BeforeAll
         fun setup() {
             System.setProperty(EXAMPLES_DIR, "src/test/resources")
+            System.setProperty(CONSUMER_GROUP_ID, "order-consumer-group-id")
             kafkaBroker.start()
 
             context = SpringApplication.run(OrderServiceApplication::class.java)
