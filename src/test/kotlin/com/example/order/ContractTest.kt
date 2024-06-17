@@ -19,11 +19,16 @@ class ContractTest : SpecmaticKafkaContractTest {
         @BeforeAll
         fun setup() {
             System.setProperty(EXAMPLES_DIR, "src/test/resources")
-            // NOTE - cannot get it from application.properties using @Value since @Value does not work in a companion object, hence hardcoding
+            // NOTE - cannot get it from application.properties using @Value since @Value does not work in a companion object.
             System.setProperty(CONSUMER_GROUP_ID, "order-consumer-group-id")
             kafkaBroker.start()
 
             context = SpringApplication.run(OrderServiceApplication::class.java)
+
+            // wait for application to be up before running the tests.
+            // needs better approach
+            // -> specmatic-kafka can hit the health actuator endpoint for a certain time period to check if it's up
+            Thread.sleep(5000)
         }
 
         @JvmStatic
