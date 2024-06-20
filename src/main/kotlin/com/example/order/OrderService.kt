@@ -32,6 +32,7 @@ class OrderService(
 
     @KafkaListener(topics = [PLACE_ORDER_TOPIC])
     fun run(orderRequest: String, ack: Acknowledgment) {
+        println("[$SERVICE_NAME] Received message on topic $PLACE_ORDER_TOPIC - $orderRequest")
         processMessage(gson.fromJson(orderRequest, OrderRequest::class.java))
         ack.acknowledge()
     }
