@@ -1,6 +1,7 @@
 package com.example.order
 
-import com.google.gson.Gson
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
@@ -27,13 +28,18 @@ class OrderService(
         private const val NOTIFICATION_TOPIC = "notification"
     }
 
-    // TODO - use jackson instead or kotlinx serialization
-    private val gson = Gson()
-
     @KafkaListener(topics = [PLACE_ORDER_TOPIC])
     fun run(orderRequest: String, ack: Acknowledgment) {
         println("[$SERVICE_NAME] Received message on topic $PLACE_ORDER_TOPIC - $orderRequest")
-        processMessage(gson.fromJson(orderRequest, OrderRequest::class.java))
+
+        val orderRequestJson = try {
+            jacksonObjectMapper().apply {
+                configure(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES, true)
+            }.readValue(orderRequest, OrderRequest::class.java)
+        } catch(e: Exception) {
+            throw e
+        }
+        processMessage(orderRequestJson)
         ack.acknowledge()
     }
 
@@ -59,7 +65,7 @@ class OrderService(
 
 data class OrderRequest(
     val orderItems: List<OrderItem>,
-    val status: String
+    val id: Int
 )
 
 data class OrderItem(
