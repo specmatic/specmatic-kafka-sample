@@ -16,8 +16,8 @@ java {
 }
 
 repositories {
+    maven { url uri("lib") }
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
@@ -33,7 +33,7 @@ dependencies {
 
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
-    testImplementation('in.specmatic:specmatic-kafka:0.22.5-TRIAL')
+    testImplementation('io.specmatic:specmatic-kafka:0.22.7-TRIAL')
     testImplementation 'org.testcontainers:testcontainers:1.18.3'
 }
 
