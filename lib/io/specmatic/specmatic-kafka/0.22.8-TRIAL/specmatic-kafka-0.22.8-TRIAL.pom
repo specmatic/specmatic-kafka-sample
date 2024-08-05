@@ -8,7 +8,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.specmatic</groupId>
   <artifactId>specmatic-kafka</artifactId>
-  <version>0.22.7-TRIAL</version>
+  <version>0.22.8-TRIAL</version>
   <name>Specmatic Kafka</name>
   <description>Specmatic Smart-Mock for Kafka</description>
   <url>https://specmatic.io</url>
