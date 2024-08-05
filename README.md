@@ -22,7 +22,7 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 ./gradlew clean test
 ```
 
-## Run the contract tests using specmatic-kafka docker container 
+## Run the contract tests using specmatic-kafka docker image 
 
 1. Start the kafka broker using Specmatic's Kafka Mock. [Note - You can use any kafka broker other than this too.]
     ```shell
@@ -35,4 +35,15 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 3. Run the contract tests.
    ```shell
     docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples-dir=examples
+   ```
+
+## Get information around other CLI args exposed by specmatic-kafka docker image
+
+1. To get information around all the CLI args of the `virtualize` command, run the following.
+   ```shell
+    docker run znsio/specmatic-kafka-trial virtualize --help
+   ```
+2. To get information around all the CLI args of the `test` command, run the following.
+   ```shell
+    docker run znsio/specmatic-kafka-trial test --help
    ```
