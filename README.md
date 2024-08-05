@@ -21,3 +21,18 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 ```shell
 ./gradlew clean test
 ```
+
+## Run the contract tests using specmatic-kafka docker container 
+
+1. Start the kafka broker using Specmatic's Kafka Mock. [Note - You can use any kafka broker other than this too.]
+    ```shell
+    docker run -p 9092:9092 -p 2181:2181 -p 29092:29092 -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" znsio/specmatic-kafka-trial virtualize
+    ```
+2. Run the application.
+   ```shell
+    ./gradlew bootRun
+   ```
+3. Run the contract tests.
+   ```shell
+    docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples-dir=examples
+   ```
