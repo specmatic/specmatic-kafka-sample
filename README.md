@@ -34,7 +34,7 @@ Upon receiving a message, the consumer processes it and publishes a new message 
    ```
 3. Run the contract tests.
    ```shell
-    docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples-dir=examples
+    docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples=examples
    ```
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image
