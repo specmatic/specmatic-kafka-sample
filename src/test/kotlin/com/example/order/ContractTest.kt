@@ -9,6 +9,9 @@ import org.junit.jupiter.api.BeforeAll
 import org.springframework.boot.SpringApplication
 import org.springframework.context.ConfigurableApplicationContext
 
+private const val IN_MEMORY_BROKER_HOST = "localhost"
+private const val IN_MEMORY_BROKER_PORT = 9092
+
 class ContractTest : SpecmaticKafkaContractTest {
 
     companion object {
@@ -19,23 +22,25 @@ class ContractTest : SpecmaticKafkaContractTest {
         @BeforeAll
         fun setup() {
             System.setProperty(EXAMPLES_DIR, "src/test/resources")
-            // NOTE - cannot get it from application.properties using @Value since @Value does not work in a companion object.
             System.setProperty(CONSUMER_GROUP_ID, "order-consumer-group-id")
-            kafkaMock = KafkaMock.startInMemoryBroker("localhost", 9092)
-
-            context = SpringApplication.run(OrderServiceApplication::class.java)
-
-            // wait for application to be up before running the tests.
-            // needs better approach
-            // -> specmatic-kafka can hit the health actuator endpoint for a certain time period to check if it's up
-            Thread.sleep(5000)
+            kafkaMock = KafkaMock.startInMemoryBroker(IN_MEMORY_BROKER_HOST, IN_MEMORY_BROKER_PORT)
+            startApplication()
         }
 
         @JvmStatic
         @AfterAll
         fun tearDown() {
-            context.stop()
+            stopApplication()
             kafkaMock.stop()
+        }
+
+        private fun startApplication() {
+            context = SpringApplication.run(OrderServiceApplication::class.java)
+            Thread.sleep(5000)
+        }
+
+        private fun stopApplication() {
+            context.stop()
         }
     }
 
