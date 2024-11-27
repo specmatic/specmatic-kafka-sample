@@ -28,13 +28,17 @@ Upon receiving a message, the consumer processes it and publishes a new message 
     ```shell
     docker run -p 9092:9092 -p 2181:2181 -p 29092:29092 -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" znsio/specmatic-kafka-trial virtualize
     ```
+   Alternatively if you want to use a standard Kafka Docker image you can run below command.
+   ```shell
+   docker compose up
+   ```
 2. Run the application.
    ```shell
-    ./gradlew bootRun
+   ./gradlew bootRun
    ```
 3. Run the contract tests.
    ```shell
-    docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples=examples
+   docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples=examples
    ```
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image
