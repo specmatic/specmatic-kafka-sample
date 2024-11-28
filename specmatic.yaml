@@ -2,3 +2,5 @@ sources:
 - provider: "filesystem"
   provides:
     - "order_service_async_v3.yaml"
+  consumes:
+    - "order_service_async_v3.yaml"

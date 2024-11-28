@@ -1,5 +1,5 @@
 {
-  "publish": {
+  "receive": {
     "topic": "place-order",
     "payload": {
       "id": 1,
@@ -13,19 +13,12 @@
       ]
     }
   },
-  "subscribe" : [
+  "send" : [
     {
       "topic": "process-order",
       "payload": {
         "totalAmount": 50000.00,
         "status": "PROCESSED"
-      }
-    },
-    {
-      "topic": "notification",
-      "payload": {
-        "message": "Order processed successfully",
-        "type": "ORDER_PLACED"
       }
     }
   ]
