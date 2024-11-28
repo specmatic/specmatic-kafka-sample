@@ -45,9 +45,9 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 
 1. To get information around all the CLI args of the `virtualize` command, run the following.
    ```shell
-    docker run znsio/specmatic-kafka-trial virtualize --help
+   docker run znsio/specmatic-kafka-trial virtualize --help
    ```
 2. To get information around all the CLI args of the `test` command, run the following.
    ```shell
-    docker run znsio/specmatic-kafka-trial test --help
+   docker run znsio/specmatic-kafka-trial test --help
    ```
