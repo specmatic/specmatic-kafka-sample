@@ -1,11 +1,34 @@
+# AsyncAPI Paris 2024
+
+## Request Reply Pattern with AsyncAPI 2.6
+
+### Start Kafka Broker
 ```shell
 docker compose up
 ```
 
+### Run the application
 ```shell
 ./gradlew bootRun 
 ```
 
+### Run AsyncAPI 2.6 spec as a contract test for `request-reply` pattern
 ```shell
-specmatic-kafka test --examples ./src/test/resources/specmatic/order_service_async_v1
+specmatic-kafka test ./api-specifications/order-service-async-v2_6_0.yaml
+```
+
+## Convert AsyncAPI 2.6 to AsyncAPI 3.0
+
+```shell
+asyncapi convert ./api-specifications/order-service-async-v2_6_0.yaml > ./api-specifications/order-service-async-v3_0_0.yaml
+```
+
+## Run 3.0 spec as a stub / mock server
+```shell
+specmatic-kafa virtualize ./api-specifications/order-service-async-v3_0_0.yaml
+```
+
+## Run AsyncAPI 3.0 spec as a contract test for `request-reply` pattern
+```shell
+specmatic-kafka test ./api-specifications/order-service-async-v3_0_0.yaml
 ```

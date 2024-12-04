@@ -1,19 +1,30 @@
-asyncapi: 2.6.0
+asyncapi: 3.0.0
 info:
   title: Order API
-  version: '1.0.0'
+  version: 1.0.0
 channels:
   place-order:
-    publish:
-      operationId: placeOrder
-      message:
-        $ref: "#/components/messages/OrderRequest"
+    address: place-order
+    messages:
+      placeOrder.message:
+        $ref: '#/components/messages/OrderRequest'
   process-order:
-    subscribe:
-      operationId: processOrder
-      message:
-        $ref: "#/components/messages/Order"
-
+    address: process-order
+    messages:
+      processOrder.message:
+        $ref: '#/components/messages/Order'
+operations:
+  onPlaceOrder:
+    action: receive
+    channel:
+      $ref: '#/channels/place-order'
+    messages:
+      - $ref: "#/channels/place-order/messages/placeOrder.message"
+    reply:
+      channel:
+        $ref: '#/channels/process-order'
+      messages:
+        - $ref: '#/channels/process-order/messages/processOrder.Message'
 components:
   messages:
     OrderRequest:
@@ -53,13 +64,13 @@ components:
             id: 12345
             orderItems:
               - id: 1
-                name: "Macbook"
+                name: Macbook
                 quantity: 1
-                price: 2000.00
+                price: 2000
               - id: 2
-                name: "Iphone"
+                name: Iphone
                 quantity: 1
-                price: 1000.00
+                price: 1000
     Order:
       name: OrderToProcess
       title: An order that needs to be processed
@@ -84,5 +95,6 @@ components:
       examples:
         - name: NEW_ORDER
           payload:
-            totalAmount: 3000.00
-            status: "PROCESSED"
+            totalAmount: 3000
+            status: PROCESSED
+
