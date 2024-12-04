@@ -5,13 +5,15 @@ info:
 
 channels:
   place-order:
+    address: place-order
     messages:
-      placeOrderMessage:
+      placeOrder.message:
         $ref: "#/components/messages/OrderRequest"
 
   process-order:
+    address: process-order
     messages:
-      processOrderMessage:
+      processOrder.message:
         $ref: "#/components/messages/Order"
 
 operations:
@@ -20,12 +22,12 @@ operations:
     channel:
       $ref: '#/channels/place-order'
     messages:
-      - $ref: "#/channels/place-order/messages/placeOrderMessage"
+      - $ref: "#/channels/place-order/messages/placeOrder.message"
     reply:
       channel:
         $ref: '#/channels/process-order'
       messages:
-        - $ref: '#/channels/process-order/messages/processOrderMessage'
+        - $ref: '#/channels/process-order/messages/processOrder.message'
 
 components:
   messages:
