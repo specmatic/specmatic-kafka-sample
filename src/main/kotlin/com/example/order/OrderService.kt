@@ -7,10 +7,6 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.support.Acknowledgment
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.clients.producer.ProducerRecord
-import org.apache.kafka.common.header.internals.RecordHeader
-import org.apache.kafka.common.header.internals.RecordHeaders
 
 private const val ORDER_STATUS_PROCESSED = "PROCESSED"
 private const val ORDER_STATUS_CANCELLED = "CANCELLED"
@@ -33,13 +29,8 @@ class OrderService(
     }
 
     @KafkaListener(topics = [PLACE_ORDER_TOPIC])
-    fun run(record: ConsumerRecord<String, String>, ack: Acknowledgment) {
-        val orderRequest = record.value()
-        val headers = record.headers()
-        val requestIdHeader = headers.lastHeader("requestId")?.value()?.let { String(it) }
-
+    fun run(orderRequest: String, ack: Acknowledgment) {
         println("[$SERVICE_NAME] Received message on topic $PLACE_ORDER_TOPIC - $orderRequest")
-        println("[$SERVICE_NAME] Headers: ${headers.joinToString { "${it.key()}: ${String(it.value())}" }}")
 
         val orderRequestJson = try {
             jacksonObjectMapper().apply {
@@ -48,28 +39,24 @@ class OrderService(
         } catch(e: Exception) {
             throw e
         }
-        processMessage(orderRequestJson, requestIdHeader)
+        processMessage(orderRequestJson)
         ack.acknowledge()
     }
 
-    private fun processMessage(orderRequest: OrderRequest, requestId: String?) {
-        sendMessageOnProcessOrderTopic(orderRequest, requestId)
-        sendMessageOnNotificationTopic(requestId)
+    private fun processMessage(orderRequest: OrderRequest) {
+        sendMessageOnProcessOrderTopic(orderRequest)
+        sendMessageOnNotificationTopic()
     }
 
-    private fun sendMessageOnProcessOrderTopic(orderRequest: OrderRequest, requestId: String?) {
+    private fun sendMessageOnProcessOrderTopic(orderRequest: OrderRequest) {
         val totalAmount = orderRequest.orderItems.sumOf { it.price * BigDecimal(it.quantity) }
         val taskMessage = """{"totalAmount": $totalAmount, "status": "$ORDER_STATUS_PROCESSED"}"""
 
         println("[$SERVICE_NAME] Publishing a message on $PROCESS_ORDER_TOPIC topic: $taskMessage")
-        val headers = RecordHeaders().apply {
-            requestId?.let { add(RecordHeader("requestId", it.toByteArray())) }
-        }
-        val producerRecord: ProducerRecord<String, String> = ProducerRecord(PROCESS_ORDER_TOPIC, null, null, null, taskMessage, headers)
-        kafkaTemplate.send(producerRecord)
+        kafkaTemplate.send(PROCESS_ORDER_TOPIC, taskMessage)
     }
 
-    private fun sendMessageOnNotificationTopic(requestId: String?) {
+    private fun sendMessageOnNotificationTopic() {
         val taskMessage = """{"message": "Order processed successfully", "type": "$NOTIFICATION_TYPE_ORDER_PLACED"}"""
         println("[$SERVICE_NAME] Publishing a message on $NOTIFICATION_TOPIC topic: $taskMessage")
         kafkaTemplate.send(NOTIFICATION_TOPIC, taskMessage)

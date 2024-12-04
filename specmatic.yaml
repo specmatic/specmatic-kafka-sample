@@ -2,5 +2,4 @@ sources:
   - provider: "filesystem"
     provides:
 #      - "api-specifications/order-service-async-v2_6_0.yaml"
-#      - "api-specifications/order-service-async-v3_0_0.yaml"
-      - "api-specifications/order-service-async-with-correlation-id_v3_0_0.yaml"
+      - "api-specifications/order-service-async-v3_0_0.yaml"

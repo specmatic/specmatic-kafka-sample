@@ -11,9 +11,6 @@
           "price": 6000.00
         }
       ]
-    },
-    "headers": {
-      "requestId": "1234"
     }
   },
   "send" : [
@@ -22,9 +19,6 @@
       "payload": {
         "totalAmount": 300000.00,
         "status": "PROCESSED"
-      },
-      "headers": {
-          "requestId": "1234"
       }
     }
   ]
