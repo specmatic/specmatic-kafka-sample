@@ -89,7 +89,7 @@ class OrderService(
     }
 
     private fun sendMessageOnProcessCancellationTopic(orderIdObject: OrderId) {
-        val reference = 10
+        val reference = 345
         val cancellationMessage = """{"reference": $reference, "status": "$CANCELLATION_COMPLETED"}"""
 
         println("[$SERVICE_NAME] Publishing a message on $PROCESS_CANCELLATION_TOPIC topic: $cancellationMessage")
@@ -97,8 +97,9 @@ class OrderService(
     }
 
     private fun sendMessageOnProcessOrderTopic(orderRequest: OrderRequest) {
+        val id = 10
         val totalAmount = orderRequest.orderItems.sumOf { it.price * BigDecimal(it.quantity) }
-        val taskMessage = """{"totalAmount": $totalAmount, "status": "$ORDER_STATUS_PROCESSED"}"""
+        val taskMessage = """{"id": $id, "totalAmount": $totalAmount, "status": "$ORDER_STATUS_PROCESSED"}"""
 
         println("[$SERVICE_NAME] Publishing a message on $PROCESS_ORDER_TOPIC topic: $taskMessage")
         kafkaTemplate.send(PROCESS_ORDER_TOPIC, taskMessage)
@@ -111,8 +112,7 @@ class OrderService(
 }
 
 data class OrderRequest(
-    val orderItems: List<OrderItem>,
-    val id: Int
+    val orderItems: List<OrderItem>
 )
 
 data class OrderItem(
