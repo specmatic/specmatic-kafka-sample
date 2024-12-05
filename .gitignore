@@ -45,3 +45,5 @@ out/
 .specmatic
 .specmatic
 .specmatic
+
+node_modules/

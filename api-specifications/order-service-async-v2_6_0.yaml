@@ -15,12 +15,12 @@ channels:
         $ref: "#/components/messages/Order"
   cancel-order:
     publish:
-      operationId: placeOrder
+      operationId: cancelOrder
       message:
         $ref: "#/components/messages/CancelOrderRequest"
   process-cancellation:
     subscribe:
-      operationId: processOrder
+      operationId: processCancellation
       message:
         $ref: "#/components/messages/CancellationReference"
 
@@ -105,12 +105,12 @@ components:
         required:
           - id
         properties:
-        id:
-          type: integer
+          id:
+            type: integer
       examples:
         - name: CANCEL_ORDER
           payload:
-            id: 12345
+            id: 10
     CancellationReference:
       name: CancellationReference
       title: A cancellation reference in response to a cancel order request
@@ -131,5 +131,5 @@ components:
       examples:
         - name: CANCEL_ORDER
           payload:
-            reference: 12345
+            reference: 10
             status: COMPLETED
