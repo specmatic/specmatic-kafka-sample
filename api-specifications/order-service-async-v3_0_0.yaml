@@ -55,12 +55,8 @@ components:
       payload:
         type: object
         required:
-          - id
           - orderItems
         properties:
-          id:
-            description: Unique identifier of the order request
-            type: number
           orderItems:
             type: array
             items:
@@ -82,7 +78,6 @@ components:
       examples:
         - name: NEW_ORDER
           payload:
-            id: 12345
             orderItems:
               - id: 1
                 name: Macbook
@@ -99,10 +94,11 @@ components:
       payload:
         type: object
         required:
+          - id
           - totalAmount
           - status
         properties:
-          orderRequestId:
+          id:
             type: integer
           totalAmount:
             type: number
@@ -116,6 +112,7 @@ components:
       examples:
         - name: NEW_ORDER
           payload:
+            id: 10
             totalAmount: 3000
             status: PROCESSED
     CancelOrderRequest:
@@ -153,6 +150,6 @@ components:
       examples:
         - name: CANCEL_ORDER
           payload:
-            reference: 10
+            reference: 345
             status: COMPLETED
 

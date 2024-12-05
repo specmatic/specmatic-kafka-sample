@@ -107,7 +107,7 @@ components:
       examples:
         - name: CANCEL_ORDER
           payload:
-            id: 12345
+            id: 10
     CancellationReference:
       name: CancellationReference
       title: A cancellation reference in response to a cancel order request
