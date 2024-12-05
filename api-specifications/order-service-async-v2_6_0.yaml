@@ -13,6 +13,16 @@ channels:
       operationId: processOrder
       message:
         $ref: "#/components/messages/Order"
+  cancel-order:
+    publish:
+      operationId: placeOrder
+      message:
+        $ref: "#/components/messages/CancelOrderRequest"
+  process-cancellation:
+    subscribe:
+      operationId: processOrder
+      message:
+        $ref: "#/components/messages/CancellationReference"
   notification:
     subscribe:
       operationId: notify
@@ -21,6 +31,34 @@ channels:
 
 components:
   messages:
+    CancelOrderRequest:
+      name: CancelOrderRequest
+      title: A cancel order request
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - orderId
+        properties:
+        orderId:
+          type: integer
+    CancellationReference:
+      name: CancellationReference
+      title: A cancellation reference in response to a cancel order request
+      contentType: application/json
+      payload:
+        type: object
+        required:
+          - cancellationReference
+          - status
+        properties:
+          cancellationReference:
+            type: integer
+          status:
+            type: string
+            enum:
+              - COMPLETED
+              - FAILED
     OrderRequest:
       name: OrderRequest
       title: An order request
