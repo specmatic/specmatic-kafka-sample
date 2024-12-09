@@ -44,8 +44,8 @@ class OrderService(
     }
 
     private fun processMessage(orderRequest: OrderRequest) {
-        sendMessageOnProcessOrderTopic(orderRequest)
         sendMessageOnNotificationTopic()
+        sendMessageOnProcessOrderTopic(orderRequest)
     }
 
     private fun sendMessageOnProcessOrderTopic(orderRequest: OrderRequest) {
