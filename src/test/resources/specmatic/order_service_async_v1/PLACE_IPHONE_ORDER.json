@@ -1,6 +1,9 @@
 {
   "receive": {
     "topic": "place-order",
+    "headers": {
+      "requestId": "100"
+    },
     "payload": {
       "id": 1,
       "orderItems": [
@@ -16,6 +19,9 @@
   "send" : [
     {
       "topic": "process-order",
+      "headers": {
+        "requestId": 100
+      },
       "payload": {
         "totalAmount": 50000.00,
         "status": "PROCESSED"
