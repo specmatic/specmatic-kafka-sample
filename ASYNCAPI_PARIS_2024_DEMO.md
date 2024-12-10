@@ -23,12 +23,12 @@ specmatic-kafka test ./api-specifications/order-service-async-v2_6_0.yaml
 asyncapi convert ./api-specifications/order-service-async-v2_6_0.yaml > ./api-specifications/order-service-async-v3_0_0.yaml
 ```
 
-## Run 3.0 spec as a stub / mock server
+## Run 3.0 spec as a mock server
 ```shell
 specmatic-kafka virtualize ./api-specifications/order-service-async-v3_0_0.yaml
 ```
 
-## Run AsyncAPI 3.0 spec as a contract test for `request-reply` pattern
+## Run AsyncAPI 2.6 spec as a contract test for `request-reply` pattern
 ```shell
 specmatic-kafka test ./api-specifications/order-service-async-v2_6_0.yaml
 ```
