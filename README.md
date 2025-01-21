@@ -51,3 +51,13 @@ Upon receiving a message, the consumer processes it and publishes a new message 
    ```shell
    docker run znsio/specmatic-kafka-trial test --help
    ```
+
+## Docker commands to run the contract tests using specmatic-kafka docker image
+
+```shell
+docker run --network host -p 9092:9092 -p 2181:2181 -p 29092:29092 -v "$PWD/api-specifications/order-service-async-v3_0_0.yaml:/usr/src/app/order-service-async-v3_0_0.yaml" znsio/specmatic-kafka virtualize /usr/src/app/order-service-async-v3_0_0.yaml
+```
+
+```shell
+docker run --network host -v "$PWD/api-specifications/order-service-async-v3_0_0.yaml:/usr/src/app/order-service-async-v3_0_0.yaml" znsio/specmatic-kafka test /usr/src/app/order-service-async-v3_0_0.yaml
+```

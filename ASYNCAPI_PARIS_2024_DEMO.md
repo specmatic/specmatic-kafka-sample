@@ -25,7 +25,7 @@ asyncapi convert ./api-specifications/order-service-async-v2_6_0.yaml > ./api-sp
 
 ## Run 3.0 spec as a mock server
 ```shell
-specmatic-kafka virtualize ./apit-specifications/order-service-async-v3_0_0.yaml
+specmatic-kafka virtualize ./api-specifications/order-service-async-v3_0_0.yaml
 ```
 
 ## Run AsyncAPI 2.6 spec as a contract test for `request-reply` pattern
