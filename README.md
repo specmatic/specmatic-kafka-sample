@@ -25,9 +25,9 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 ## Run the contract tests using specmatic-kafka docker image 
 
 1. Start the kafka broker using Specmatic's Kafka Mock. [Note - You can use any kafka broker other than this too.]
-    ```shell
-    docker run -p 9092:9092 -p 2181:2181 -p 29092:29092 -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" znsio/specmatic-kafka-trial virtualize
-    ```
+   ```shell
+   docker run --network host -p 9092:9092 -p 2181:2181 -p 29092:29092 -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" znsio/specmatic-kafka-trial:0.22.13 virtualize
+   ```
    Alternatively if you want to use a standard Kafka Docker image you can run below command.
    ```shell
    docker compose up
@@ -38,7 +38,7 @@ Upon receiving a message, the consumer processes it and publishes a new message 
    ```
 3. Run the contract tests.
    ```shell
-   docker run --network="host" -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" znsio/specmatic-kafka-trial test --examples=examples
+   docker run --network host -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" -v "$PWD/build/reports:/usr/src/app/build/reports" znsio/specmatic-kafka-trial:0.22.13 test --examples=examples
    ```
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image

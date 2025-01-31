@@ -49,8 +49,9 @@ class OrderService(
     }
 
     private fun sendMessageOnProcessOrderTopic(orderRequest: OrderRequest) {
+        val id = 1
         val totalAmount = orderRequest.orderItems.sumOf { it.price * BigDecimal(it.quantity) }
-        val taskMessage = """{"totalAmount": $totalAmount, "status": "$ORDER_STATUS_PROCESSED"}"""
+        val taskMessage = """{"id": $id, "totalAmount": $totalAmount, "status": "$ORDER_STATUS_PROCESSED"}"""
 
         println("[$SERVICE_NAME] Publishing a message on $PROCESS_ORDER_TOPIC topic: $taskMessage")
         kafkaTemplate.send(PROCESS_ORDER_TOPIC, taskMessage)
@@ -65,7 +66,6 @@ class OrderService(
 
 data class OrderRequest(
     val orderItems: List<OrderItem>,
-    val id: Int
 )
 
 data class OrderItem(
