@@ -1,0 +1,9 @@
+<configuration>
+    <logger name="org.apache.kafka" level="ERROR"/>
+    <logger name="kafka" level="ERROR"/>
+    <logger name="kafka.server" level="ERROR"/>
+    <logger name="kafka.network" level="ERROR"/>
+    <logger name="kafka.controller" level="ERROR"/>
+    <logger name="org.I0Itec.zkclient" level="ERROR"/>
+    <logger name="org.apache.zookeeper" level="ERROR"/>
+</configuration>

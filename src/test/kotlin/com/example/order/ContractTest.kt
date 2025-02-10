@@ -1,29 +1,34 @@
 package com.example.order
 
-import io.specmatic.async.junit.SpecmaticKafkaContractTest
-import io.specmatic.async.utils.CONSUMER_GROUP_ID
-import io.specmatic.async.utils.EXAMPLES_DIR
-import io.specmatic.kafka.mock.KafkaMock
+import io.specmatic.async.core.constants.KAFKA_PORT
+import io.specmatic.kafka.test.SpecmaticKafkaContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.TestInstance
 import org.springframework.boot.SpringApplication
 import org.springframework.context.ConfigurableApplicationContext
+import org.springframework.kafka.test.EmbeddedKafkaBroker
+import org.springframework.kafka.test.EmbeddedKafkaZKBroker
 
-private const val IN_MEMORY_BROKER_HOST = "localhost"
-private const val IN_MEMORY_BROKER_PORT = 9092
-
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContractTest : SpecmaticKafkaContractTest {
 
     companion object {
         private lateinit var context: ConfigurableApplicationContext
-        private lateinit var kafkaMock: KafkaMock
+        private lateinit var embeddedKafka: EmbeddedKafkaBroker
+        private lateinit var port: String
 
         @JvmStatic
         @BeforeAll
         fun setup() {
-            System.setProperty(EXAMPLES_DIR, "src/test/resources")
-            System.setProperty(CONSUMER_GROUP_ID, "order-consumer-group-id")
-            kafkaMock = KafkaMock.startInMemoryBroker(IN_MEMORY_BROKER_HOST, IN_MEMORY_BROKER_PORT)
+            embeddedKafka = EmbeddedKafkaZKBroker(
+                1,
+                false,
+                "place-order", "process-order"
+            )
+            embeddedKafka.afterPropertiesSet()
+            port = embeddedKafka.brokersAsString.split(":")[1]
+            System.setProperty(KAFKA_PORT, port)
             startApplication()
         }
 
@@ -31,17 +36,17 @@ class ContractTest : SpecmaticKafkaContractTest {
         @AfterAll
         fun tearDown() {
             stopApplication()
-            kafkaMock.stop()
+            embeddedKafka.destroy()
+            System.clearProperty(KAFKA_PORT)
         }
 
         private fun startApplication() {
+            Thread.sleep(1000)
             context = SpringApplication.run(OrderServiceApplication::class.java)
-            Thread.sleep(5000)
         }
 
         private fun stopApplication() {
             context.stop()
         }
     }
-
 }
