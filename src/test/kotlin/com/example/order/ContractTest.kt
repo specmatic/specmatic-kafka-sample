@@ -1,5 +1,6 @@
 package com.example.order
 
+import io.specmatic.async.core.constants.AVAILABLE_SERVERS
 import io.specmatic.async.core.constants.KAFKA_PORT
 import io.specmatic.kafka.test.SpecmaticKafkaContractTest
 import org.junit.jupiter.api.AfterAll
@@ -16,7 +17,6 @@ class ContractTest : SpecmaticKafkaContractTest {
     companion object {
         private lateinit var context: ConfigurableApplicationContext
         private lateinit var embeddedKafka: EmbeddedKafkaBroker
-        private lateinit var port: String
 
         @JvmStatic
         @BeforeAll
@@ -25,10 +25,9 @@ class ContractTest : SpecmaticKafkaContractTest {
                 1,
                 false,
                 "place-order", "process-order"
-            )
+            ).kafkaPorts(9092)
             embeddedKafka.afterPropertiesSet()
-            port = embeddedKafka.brokersAsString.split(":")[1]
-            System.setProperty(KAFKA_PORT, port)
+            System.setProperty(AVAILABLE_SERVERS, "localhost:9092")
             startApplication()
         }
 
@@ -37,7 +36,7 @@ class ContractTest : SpecmaticKafkaContractTest {
         fun tearDown() {
             stopApplication()
             embeddedKafka.destroy()
-            System.clearProperty(KAFKA_PORT)
+            System.clearProperty(AVAILABLE_SERVERS)
         }
 
         private fun startApplication() {
