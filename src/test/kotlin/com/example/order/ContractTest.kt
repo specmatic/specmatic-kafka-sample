@@ -1,43 +1,36 @@
 package com.example.order
 
-import io.specmatic.kafka.mock.KafkaMock
+import io.specmatic.async.core.constants.AVAILABLE_SERVERS
 import io.specmatic.kafka.test.SpecmaticKafkaContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
-import org.springframework.boot.SpringApplication
-import org.springframework.context.ConfigurableApplicationContext
+import org.junit.jupiter.api.TestInstance
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.kafka.test.EmbeddedKafkaBroker
+import org.springframework.kafka.test.EmbeddedKafkaZKBroker
 
-private const val IN_MEMORY_BROKER_HOST = "localhost"
-private const val IN_MEMORY_BROKER_PORT = 9092
-
+@SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ContractTest : SpecmaticKafkaContractTest {
+    private lateinit var embeddedKafka: EmbeddedKafkaBroker
 
-    companion object {
-        private lateinit var context: ConfigurableApplicationContext
-        private lateinit var kafkaMock: KafkaMock
-
-        @JvmStatic
-        @BeforeAll
-        fun setup() {
-            kafkaMock = KafkaMock.startInMemoryBroker(IN_MEMORY_BROKER_HOST, IN_MEMORY_BROKER_PORT)
-            startApplication()
-        }
-
-        @JvmStatic
-        @AfterAll
-        fun tearDown() {
-            stopApplication()
-            kafkaMock.stop()
-        }
-
-        private fun startApplication() {
-            context = SpringApplication.run(OrderServiceApplication::class.java)
-            Thread.sleep(5000)
-        }
-
-        private fun stopApplication() {
-            context.stop()
-        }
+    @BeforeAll
+    fun setup() {
+        embeddedKafka =
+            EmbeddedKafkaZKBroker(
+                1,
+                false,
+                "place-order",
+                "process-order",
+                "notification"
+            ).kafkaPorts(9092)
+        embeddedKafka.afterPropertiesSet()
+        System.setProperty(AVAILABLE_SERVERS, "localhost:9092")
     }
 
+    @AfterAll
+    fun tearDown() {
+        embeddedKafka.destroy()
+        Thread.sleep(200)
+    }
 }
