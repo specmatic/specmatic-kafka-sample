@@ -22,9 +22,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@dbbdc275be76ac10734476cc723d82dfe7ec6eda # v3.4.2
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+    - name: Upload HTML Test Report
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.os }}-${{ matrix.java }}-html-report
+        path: build/reports/specmatic/html
