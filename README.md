@@ -5,7 +5,7 @@
 
 This sample project demonstrates how we can run contract tests against a service which interacts with a kafka broker.
 
-**NOTE**: This project uses **AsyncAPI 2.6** specification. For equivalent sample project that uses **AsyncAPI 3.0** spec please refer to **[specmatic-kafka-sample-asyncapi3](https://github.com/znsio/specmatic-kafka-sample-asyncapi3)**.
+**NOTE**: This project uses **AsyncAPI 2.6** specification. For equivalent sample project that uses **AsyncAPI 3.0** spec please refer to **[specmatic-kafka-sample-asyncapi3](https://github.com/specmatic/specmatic-kafka-sample-asyncapi3)**.
 
 ## Background
 This project includes a consumer that listens to messages on a specific topic.
@@ -30,22 +30,28 @@ Upon receiving a message, the consumer processes it and publishes a new message 
    ```shell
    docker compose up
    ```
-2. Run the application.
+2. Create the required topics in the running Kafka broker.
+   ```shell
+   docker exec kafka /opt/kafka/bin/kafka-topics.sh --create --topic place-order --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
+   docker exec kafka /opt/kafka/bin/kafka-topics.sh --create --topic process-order --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
+   docker exec kafka /opt/kafka/bin/kafka-topics.sh --create --topic notification --partitions 3 --replication-factor 1 --bootstrap-server localhost:9092
+   ```
+3. Run the application.
    ```shell
    ./gradlew bootRun
    ```
-3. Run the contract tests.
+4. Run the contract tests.
    ```shell
-   docker run --network host -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" -v "$PWD/build/reports:/usr/src/app/build/reports" znsio/specmatic-kafka:0.22.13 test --examples=examples
+   docker run --network host -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" -v "$PWD/build/reports:/usr/src/app/build/reports" specmatic/specmatic-kafka test --broker localhost:9092 --examples=examples
    ```
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image
 
 1. To get information around all the CLI args of the `virtualize` command, run the following.
    ```shell
-    docker run znsio/specmatic-kafka virtualize --help
+    docker run specmatic/specmatic-kafka virtualize --help
    ```
 2. To get information around all the CLI args of the `test` command, run the following.
    ```shell
-    docker run znsio/specmatic-kafka test --help
+    docker run specmatic/specmatic-kafka test --help
    ```
