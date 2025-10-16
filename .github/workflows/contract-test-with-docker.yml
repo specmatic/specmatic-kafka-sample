@@ -38,8 +38,18 @@ jobs:
 
       - name: Wait for application
         run: |
-          echo "Waiting for application..."
-          sleep 10
+          echo "Waiting for application to start..."
+          for i in {1..60}; do
+            if grep -q "order-service started running.." app.log; then
+              echo "Application startup detected in logs."
+              break
+            fi
+            sleep 1
+          done
+          if ! grep -q "order-service started running.." app.log; then
+            echo "Application failed to start within 60 seconds." >&2
+            exit 1
+          fi
 
       - name: Create reports directory
         run: mkdir -p build/reports
