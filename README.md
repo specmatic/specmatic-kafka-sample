@@ -5,8 +5,6 @@
 
 This sample project demonstrates how we can run contract tests against a service which interacts with a kafka broker.
 
-**NOTE**: This project uses **AsyncAPI 2.6** specification. For equivalent sample project that uses **AsyncAPI 3.0** spec please refer to **[specmatic-kafka-sample-asyncapi3](https://github.com/specmatic/specmatic-kafka-sample-asyncapi3)**.
-
 ## Background
 This project includes a consumer that listens to messages on a specific topic.
 Upon receiving a message, the consumer processes it and publishes a new message to two other designated topics.
