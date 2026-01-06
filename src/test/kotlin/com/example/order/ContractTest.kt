@@ -1,6 +1,7 @@
 package com.example.order
 
-import io.specmatic.async.test.SpecmaticAsyncContractTest
+import io.specmatic.async.core.constants.AVAILABLE_SERVERS
+import io.specmatic.kafka.test.SpecmaticKafkaContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -10,7 +11,7 @@ import org.springframework.kafka.test.EmbeddedKafkaZKBroker
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContractTest : SpecmaticAsyncContractTest {
+class ContractTest : SpecmaticKafkaContractTest {
     private lateinit var embeddedKafka: EmbeddedKafkaBroker
 
     @BeforeAll
@@ -24,6 +25,7 @@ class ContractTest : SpecmaticAsyncContractTest {
                 "notification"
             ).kafkaPorts(9092)
         embeddedKafka.afterPropertiesSet()
+        System.setProperty(AVAILABLE_SERVERS, "localhost:9092")
     }
 
     @AfterAll
