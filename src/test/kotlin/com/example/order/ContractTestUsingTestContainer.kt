@@ -52,7 +52,7 @@ class ContractTestUsingTestContainer {
     }
 
     private val testContainer: GenericContainer<*> =
-        GenericContainer("specmatic/specmatic-async")
+        GenericContainer("specmatic/enterprise")
             .withCommand("test")
             .withImagePullPolicy(PullPolicy.alwaysPull())
             .withFileSystemBind(
