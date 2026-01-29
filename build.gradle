@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.21.0'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
 
-    testImplementation("org.assertj:assertj-core:3.27.6")
+    testImplementation("org.assertj:assertj-core:3.27.7")
     testImplementation 'org.junit.jupiter:junit-jupiter:5.14.2'
     testImplementation('io.specmatic.async:specmatic-async:2.2.4')
     testImplementation("org.springframework.kafka:spring-kafka-test:3.3.12")
