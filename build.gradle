@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     id 'org.springframework.boot' version '3.5.10'
     id 'io.spring.dependency-management' version '1.1.7'
@@ -11,75 +9,38 @@ plugins {
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
-java {
-    sourceCompatibility = '17'
-}
-
 repositories {
     mavenLocal()
-    maven {
-        url "https://repo.specmatic.io/releases"
-    }
     maven {
         url "https://packages.confluent.io/maven/"
     }
     mavenCentral()
 }
 
-ext['kafka.version'] = '3.9.1'
-
 dependencies {
     implementation ('org.springframework.boot:spring-boot-starter') {
         exclude group: 'ch.qos.logback', module: 'logback-classic'
     }
-    implementation 'org.springframework.kafka:spring-kafka:3.3.12'
+    implementation ('org.springframework.kafka:spring-kafka:3.3.12') {
+        exclude group: 'org.lz4', module: 'lz4-java'
+    }
 
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.21.0'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.21.0'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0"
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.21")
 
     testImplementation("org.assertj:assertj-core:3.27.7")
     testImplementation 'org.junit.jupiter:junit-jupiter:5.14.2'
-    testImplementation('io.specmatic.async:specmatic-async:2.2.5')
-    testImplementation("org.springframework.kafka:spring-kafka-test:3.3.12")
+    testImplementation("io.specmatic.enterprise:executable:${project.ext['specmaticEnterpriseVersion']}")
+    testImplementation("org.springframework.kafka:spring-kafka-test:3.3.12") {
+        exclude group: 'org.lz4', module: 'lz4-java'
+    }
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.5.10")
     testImplementation "org.testcontainers:junit-jupiter:1.21.4"
 }
 
-tasks.withType(KotlinCompile).configureEach {
-    kotlinOptions {
-        freeCompilerArgs += '-Xjsr305=strict'
-        jvmTarget = '17'
-    }
-}
-
 test {
     useJUnitPlatform()
-    environment "PUBSUB_EMULATOR_HOST", "localhost:8085"
-    testLogging.showStandardStreams = true
-    testLogging {
-        showStandardStreams = true
-        events "passed", "skipped", "failed"
-        afterSuite { desc, result ->
-            if (desc.parent == null) {
-                println()
-                println("-------------------------")
-                println("Total tests run: ${result.testCount}")
-                println("Tests passed: ${result.successfulTestCount}")
-                println("Tests failed: ${result.failedTestCount}")
-                println("Tests skipped: ${result.skippedTestCount}")
-                println("-------------------------")
-                println()
-            }
-        }
-    }
-}
-
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "com.fasterxml.jackson.core") {
-            useVersion("2.19.0")
-        }
-    }
 }

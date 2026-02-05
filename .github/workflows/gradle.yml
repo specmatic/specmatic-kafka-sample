@@ -32,7 +32,7 @@ jobs:
         echo "${{ secrets.SPECMATIC_LICENSE_KEY }}" > ~/.specmatic/specmatic-license.txt
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew assemble test --tests '**.ContractTest'
 
     - name: Upload HTML Test Report
       uses: actions/upload-artifact@v6

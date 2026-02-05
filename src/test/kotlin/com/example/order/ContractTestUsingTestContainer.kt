@@ -21,7 +21,8 @@ class ContractTestUsingTestContainer {
 
     companion object {
         @JvmStatic
-        fun isNonCIOrLinux(): Boolean = System.getenv("CI") != "true" || System.getProperty("os.name").lowercase().contains("linux")
+        fun isNonCIOrLinux(): Boolean =
+            System.getenv("CI") != "true" || System.getProperty("os.name").lowercase().contains("linux")
 
         private lateinit var embeddedKafka: EmbeddedKafkaBroker
 
@@ -52,20 +53,14 @@ class ContractTestUsingTestContainer {
     }
 
     private val testContainer: GenericContainer<*> =
-        GenericContainer("specmatic/specmatic-async")
+        GenericContainer("specmatic/enterprise")
             .withCommand("test")
             .withImagePullPolicy(PullPolicy.alwaysPull())
-            .withFileSystemBind(
-                "./specmatic.yaml",
-                "/usr/src/app/specmatic.yaml",
-                BindMode.READ_ONLY,
-            ).withFileSystemBind(
-                "./build/reports/specmatic",
-                "/usr/src/app/build/reports/specmatic",
-                BindMode.READ_WRITE,
-            ).waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
+            .withFileSystemBind("./", "/usr/src/app", BindMode.READ_WRITE)
+            .waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
             .withNetworkMode("host")
             .withLogConsumer { print(it.utf8String) }
+
 
     @Test
     fun specmaticContractTest() {
