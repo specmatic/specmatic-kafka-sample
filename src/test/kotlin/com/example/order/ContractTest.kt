@@ -1,6 +1,6 @@
 package com.example.order
 
-import io.specmatic.async.test.SpecmaticAsyncContractTest
+import io.specmatic.enterprise.SpecmaticContractTest
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.TestInstance
@@ -10,7 +10,7 @@ import org.springframework.kafka.test.EmbeddedKafkaZKBroker
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class ContractTest : SpecmaticAsyncContractTest {
+class ContractTest : SpecmaticContractTest {
     private lateinit var embeddedKafka: EmbeddedKafkaBroker
 
     @BeforeAll
