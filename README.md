@@ -45,9 +45,9 @@ Upon receiving a message, the consumer processes it and publishes a new message 
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image
 
-1. To get information around all the CLI args of the `virtualize` command, run the following.
+1. To get information around all the CLI args of the `mock` command, run the following.
    ```shell
-    docker run specmatic/specmatic-kafka virtualize --help
+    docker run specmatic/specmatic-kafka mock --help
    ```
 2. To get information around all the CLI args of the `test` command, run the following.
    ```shell
