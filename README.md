@@ -39,9 +39,17 @@ Upon receiving a message, the consumer processes it and publishes a new message 
    ./gradlew bootRun
    ```
 4. Run the contract tests.
-   ```shell
-   docker run --network host -v "$PWD/specmatic.yaml:/usr/src/app/specmatic.yaml" -v "$PWD/src/test/resources:/usr/src/app/examples" -v "$PWD/build/reports:/usr/src/app/build/reports" specmatic/specmatic-kafka test --broker localhost:9092 --examples=examples
-   ```
+- On Unix and Windows Powershell:
+
+```shell
+  docker run --rm --network host -v "$(pwd):/usr/src/app" specmatic/enterprise test
+```
+
+- On Windows CMD Prompt:
+
+```shell
+  docker run --rm --network host -v "%cd%:/usr/src/app" specmatic/enterprise test
+```
 
 ## Get information around other CLI args exposed by specmatic-kafka docker image
 

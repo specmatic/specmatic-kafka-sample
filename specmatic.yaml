@@ -1,18 +1,26 @@
-version: 2
-contracts:
-- git:
-    url: "https://github.com/specmatic/specmatic-order-contracts.git"
-  provides:
-     - specs:
-         - io/specmatic/examples/store/asyncapi/order_service_async_v1.yaml
-       specType: asyncapi
-       config:
-         servers:
-             - host: localhost:9092
-               protocol: kafka
-#  provides:
-#  - "io/specmatic/examples/store/asyncapi/order_service_async_v1.yaml"
-
-report:
-  formatters:
-    - type: ctrf
+version: 3
+systemUnderTest:
+  service:
+    $ref: "#/components/services/orderAsyncApi2_6Service"
+    runOptions:
+      $ref: "#/components/runOptions/orderAsyncApi2_6ServiceTest"
+components:
+  sources:
+    specmaticOrderContracts:
+      git:
+        url: https://github.com/specmatic/specmatic-order-contracts.git
+  services:
+    orderAsyncApi2_6Service:
+      definitions:
+        - definition:
+            source:
+              $ref: "#/components/sources/specmaticOrderContracts"
+            specs:
+              - io/specmatic/examples/store/asyncapi/order_service_async_v1.yaml
+  runOptions:
+    orderAsyncApi2_6ServiceTest:
+      asyncapi:
+        type: test
+        servers:
+          - host: "localhost:9092"
+            protocol: kafka
