@@ -32,7 +32,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.21")
 
     testImplementation("org.assertj:assertj-core:3.27.7")
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.14.3'
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.0.3'
     testImplementation("io.specmatic.enterprise:executable:${project.ext['specmaticEnterpriseVersion']}")
     testImplementation("org.springframework.kafka:spring-kafka-test:3.3.12") {
         exclude group: 'org.lz4', module: 'lz4-java'
