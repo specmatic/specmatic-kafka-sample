@@ -1,14 +1,19 @@
 package com.example.order
 
+import io.specmatic.testcontainers.UnhealthyContainerHealthcheckLogger
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.condition.EnabledIf
+import org.junit.jupiter.api.extension.RegisterExtension
+import org.slf4j.LoggerFactory
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.kafka.test.context.EmbeddedKafka
 import org.springframework.test.annotation.DirtiesContext
+import org.testcontainers.DockerClientFactory
 import org.testcontainers.containers.BindMode
 import org.testcontainers.containers.GenericContainer
+import org.testcontainers.containers.output.Slf4jLogConsumer
 import org.testcontainers.containers.wait.strategy.Wait
 
 @SpringBootTest
@@ -34,6 +39,12 @@ import org.testcontainers.containers.wait.strategy.Wait
 class ContractTestUsingTestContainer {
 
     companion object {
+        private val logger = LoggerFactory.getLogger(ContractTestUsingTestContainer::class.java)
+
+        @JvmField
+        @RegisterExtension
+        val unhealthyContainerHealthchecks = UnhealthyContainerHealthcheckLogger(dockerClient = DockerClientFactory.instance().client())
+
         @JvmStatic
         fun isNonCIOrLinux(): Boolean =
             System.getenv("CI") != "true" || System.getProperty("os.name").lowercase().contains("linux")
@@ -45,7 +56,7 @@ class ContractTestUsingTestContainer {
             .withFileSystemBind("./", "/usr/src/app", BindMode.READ_WRITE)
             .waitingFor(Wait.forLogMessage(".*Failed:.*", 1))
             .withNetworkMode("host")
-            .withLogConsumer { print(it.utf8String) }
+            .withLogConsumer(Slf4jLogConsumer(logger))
 
 
     @Test
