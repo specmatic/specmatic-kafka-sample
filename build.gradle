@@ -26,8 +26,8 @@ dependencies {
     }
 
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.0'
-    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.22.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.1'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.22.1'
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0"
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.22")
 
